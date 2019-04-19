@@ -35,8 +35,6 @@ def task_1_fix_names_start_letter(data: DT) -> DT:
     return data
 
 
-# print(task_1_fix_names_start_letter([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}]))
-
 def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
     """given_data
     Remove from dictionaries given key value
@@ -52,7 +50,7 @@ def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
 
 def task_3_find_item_via_value(data: DT, value) -> DT:
     """
-    Find and return all it  ems that has @searching value in any key
+    Find and return all items that has @searching value in any key
     Examples:
         find_item_via_value([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}], 26)
         >>> [{'name': 'Alex', 'age': 26}]
