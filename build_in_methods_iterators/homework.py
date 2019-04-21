@@ -35,6 +35,8 @@ def task_1_fix_names_start_letter(data: DT) -> DT:
     return data
 
 
+# print(task_1_fix_names_start_letter([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}]))
+
 def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
     """given_data
     Remove from dictionaries given key value
@@ -45,17 +47,17 @@ def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
     """
     # return ([{val:item[val] for val in item if val not in redundant_keys} for item in data])
 
-    return [{k: v for k, v in dict_.items() if k not in redundant_keys} for dict_ in data]
+    return [{k: v for k, v in item.items() if k not in redundant_keys} for item in data]
 
 
 def task_3_find_item_via_value(data: DT, value) -> DT:
     """
-    Find and return all items that has @searching value in any key
+    Find and return all it  ems that has @searching value in any key
     Examples:
         find_item_via_value([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}], 26)
         >>> [{'name': 'Alex', 'age': 26}]
     """
-    return ([item for item in data if value in item.values()])
+    return [item for item in data if value in item.values()]
 
 
 def task_4_min_value_integers(data: List[int]) -> int:
@@ -65,8 +67,6 @@ def task_4_min_value_integers(data: List[int]) -> int:
     # return ([min_value for item in data if min_value < item])
     if data:
         return (reduce(lambda x, y: x if x < y else y, data))
-    else:
-        return None
 
 
 def task_5_min_value_strings(data: List[Union[str, int]]) -> str:
@@ -75,8 +75,6 @@ def task_5_min_value_strings(data: List[Union[str, int]]) -> str:
     """
     if data:
         return (reduce(lambda x, y: str(x) if len(str(x)) < len(str(y)) else str(y), data))
-    else:
-        return None
 
 
 def task_6_min_value_list_of_dicts(data: DT, key: str) -> ST:
