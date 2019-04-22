@@ -91,8 +91,9 @@ def task_7_max_value_list_of_lists(data: List[List[int]]) -> int:
     """
     Find max value from list of lists
     """
-    return max(max((item for item in data)))
+    return max(max(item) for item in data)
 
+#print (task_7_max_value_list_of_lists([[97, 34, -35, -80, 77, -19, 71,250], [76, -93, 36, -76, -1, -51], [-82, -12, 63, 48, 350], [96, -89], [-91, 10, 44, 17], [-55, -36, 93, -91], [-96]]))
 
 def task_8_sum_of_ints(data: List[int]) -> int:
     """
