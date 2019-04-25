@@ -25,11 +25,10 @@ CustomerID SERIAL PRIMARY KEY,
     Returns: 92 records
 
     """
-    with con as cur:
-        cur = con.cursor()
-        cur.execute('''INSERT INTO Customers(CustomerName, ContactName, Address, City, PostalCode, Country) 
+    cur = con.cursor()
+    cur.execute('''INSERT INTO Customers(CustomerName, ContactName, Address, City, PostalCode, Country) 
                        VALUES ('Thomas', 'David', 'Some Address',  'London', '774', 'Singapore')''')
-        con.commit()
+    con.commit()
 
 
 def task_2_list_all_customers(cur) -> list:
