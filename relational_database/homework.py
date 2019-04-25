@@ -147,7 +147,7 @@ def task_9_count_customers_by_country_with_than_10_customers(cur):
 
     Returns: 3 records
     """
-    cur.execute("SELECT count(CustomerID), City FROM Customers GROUP BY City HAVING count(CustomerID)>10")
+    cur.execute("SELECT count(CustomerID), Country FROM Customers GROUP BY Country HAVING count(CustomerID)>10")
     return cur.fetchall()
 
 
