@@ -44,21 +44,17 @@ from constants import TOWNS
 
 class Car:
 
-    def __init__(self, price, type, producer, mileage):
-        self.price = price
-        self.type = type
+    def __init__(self, price: float, car_type: string, producer: string, mileage: float):
+        self.price = round(price,2)
+        self.car_type = car_type
         self.producer = producer
-        self.mileage = mileage
+        self.mileage = round(mileage,2)
         self.number = uuid.uuid4()
 
 
-    def __str__(self):
-        return f"\nCar produser: {self.producer}, type: {self.type}, " \
-               f"number: {self.number}, price: {self.price}, spend mileage: {self.mileage}"
-
-
     def __repr__(self):
-        return self.__str__()
+        return f"\nCar produser: {self.producer}, type: {self.car_type}, " \
+               f"number: {self.number}, price: {self.price}, spend mileage: {self.mileage}"
 
 
     def __le__(self, other):
@@ -83,9 +79,7 @@ class Car:
 
 class Garage:
 
-    garage_cars: List[Car]
-
-    def __init__(self, town, places, garage_cars,  owner=None):
+    def __init__(self, town: string, places: int, garage_cars: List[Car],  owner=None):
         self.town = town
         self.places = places
         self.cars = garage_cars if garage_cars is not None else []
@@ -93,16 +87,11 @@ class Garage:
         self.current = 0
 
 
-    def __str__(self):
-        all_cars = "".join(str(item) for item in self.cars)
+    def __repr__(self):
         return f"\nTown: {self.town}, Places: {self.places}, owner: {self.owner}, car: {self.cars}"
 
 
-    def __repr__(self):
-        return self.__str__()
-
-
-    def add(self,new_car):
+    def add(self, new_car: string):
         if len(self.cars) < self.places:
             self.cars.append(new_car)
             return self
@@ -110,7 +99,7 @@ class Garage:
             return f"Garage haven't got any free places"
 
 
-    def remove(self,my_car):
+    def remove(self, my_car: string):
         if my_car in self.cars:
             self.cars.remove(my_car)
             print('THE CAR WAS DELETED!')
@@ -118,20 +107,18 @@ class Garage:
 
 
     def hit_hat(self):
-        return sum(car.price for car in self.cars)
+        return round(sum(car.price for car in self.cars),2)
 
 
 class Cesar:
 
-    cesar_garages: List[Garage]
-
-    def __init__(self, name, cesar_garages = 0):
+    def __init__(self, name: string, cesar_garages: List[Garage]):
         self.name = name
         self.cesar_garages = cesar_garages if cesar_garages is not None else []
         self.register_id = uuid.uuid4()
 
 
-    def __str__(self):
+    def __repr__(self):
         return f"CESAR NAME: {self.name}, " \
                f"\nREGISTER_ID: {self.register_id}, " \
                f"\nCOUNT OF GARAGE: {self.garages_count()}, " \
@@ -140,12 +127,12 @@ class Cesar:
                f"\nGARAGE: {self.cesar_garages}, "
 
 
-    def compare_cesar(cesar_list):
+    def compare_cesar(cesar_list: list):
         return max((cesar for cesar in cesar_list), key=lambda x: x.hit_hat() )
 
 
     def hit_hat(self):
-        return sum(item.hit_hat() for item in self.cesar_garages)
+        return round(sum(item.hit_hat() for item in self.cesar_garages),2)
 
 
     def garages_count(self):
@@ -156,7 +143,7 @@ class Cesar:
         return sum(len(garage.cars) for garage in self.cesar_garages)
 
 
-    def add_car(self, car, garage = None):
+    def add_car(self, car: string, garage = None):
         new_car_max_free_garage = 0
         if garage == None:
             return max(self.cesar_garages, key = lambda x:(x.places-len(x.cars))).add(car)
@@ -170,19 +157,19 @@ if __name__ == "__main__":
     cars = []
     for car_counter in range(random.randint(10, 100)):
         car = Car(price=random.uniform(100.5, 999.5),
-                  type=random.choice(CARS_TYPES),
+                  car_type=random.choice(CARS_TYPES),
                   producer=random.choice(CARS_PRODUCER),
                   mileage=random.uniform(0, 1000000),
                   )
         cars.append(car)
 
     car1 = Car(price=random.uniform(100.5, 999.5),
-               type=random.choice(CARS_TYPES),
+               car_type=random.choice(CARS_TYPES),
                producer=random.choice(CARS_PRODUCER),
                mileage=random.uniform(0, 1000000),
                )
     car2 = Car(price=random.uniform(100.5, 999.5),
-               type=random.choice(CARS_TYPES),
+               car_type=random.choice(CARS_TYPES),
                producer=random.choice(CARS_PRODUCER),
                mileage=random.uniform(0, 1000000),
                )
@@ -241,18 +228,19 @@ if __name__ == "__main__":
                                     places=random_place,
                                     garage_cars=get_car)
             garages.append(garage)
-
+            print (garage)
             #print("\nCOUNT CARS: ", len(get_car))
             #print("COUNT PLACE: ", random_place)
             #print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
-            #print (garage)
 
-        print ("\n-----CHECK CESAR------")
+
+
         cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
         cesars.append(cesar)
 
-        for item in cesars:
-            print(item, "\n")
+    print ("\n-----CHECK CESAR------")
+    for item in cesars:
+        print(item, "\n")
 
     print ("THE RICHEST CESAR IS: ",(Cesar.compare_cesar(cesars)).name)
 
@@ -272,9 +260,3 @@ if __name__ == "__main__":
 
 
 print ("-----------------------------------")
-
-
-
-
-
-
