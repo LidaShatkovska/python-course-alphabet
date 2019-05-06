@@ -122,11 +122,11 @@ class Cesar:
         return f"CESAR NAME: {self.name}, " \
                f"\nREGISTER_ID: {self.register_id}, " \
                f"\nCOUNT OF GARAGE: {self.garages_count()}, " \
-               f"\nCOUNT CAR IN ALL GARAGES:  {self.сars_count()}, " \
+               f"\nCOUNT CAR IN ALL GARAGES:  {self.cars_count()}, " \
                f"\nSUM PRICE ALL CAR:  {self.hit_hat()}" \
                f"\nGARAGE: {self.cesar_garages}, "
 
-
+    @staticmethod
     def compare_cesar(cesar_list: list):
         return max((cesar for cesar in cesar_list), key=lambda x: x.hit_hat() )
 
@@ -139,13 +139,12 @@ class Cesar:
         return len(self.cesar_garages)
 
 
-    def сars_count(self):
+    def cars_count(self):
         return sum(len(garage.cars) for garage in self.cesar_garages)
 
 
     def add_car(self, car: string, garage = None):
-        new_car_max_free_garage = 0
-        if garage == None:
+        if garage is None:
             return max(self.cesar_garages, key = lambda x:(x.places-len(x.cars))).add(car)
         else:
             return garage.add(car)
