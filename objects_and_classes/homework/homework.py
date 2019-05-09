@@ -54,13 +54,9 @@ class Car:
         self.producer = producer
         self.mileage = round(mileage,2)
         self.number = uuid.uuid4()
-       # car_data = 0
+        self.car_set = ({'produser': self.producer, 'car_type': self.car_type, 'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
         json_formatted_str = ''
 
-
-    def create_set(self):
-        return ({'produser':self.producer, 'car_type': self.car_type, 'number': str(self.number),
-                 'price': self.price, 'mileage': self.mileage})
 
     def __repr__(self):
         return f"\nproduser: {self.producer}, car_type: {self.car_type}, " \
@@ -143,6 +139,7 @@ class Garage:
         self.owner = owner
         self.current = 0
         self.yaml = YAML()
+        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, 'car': self.cars})
 
 
     def __repr__(self):
@@ -179,10 +176,10 @@ class Garage:
         owner = new_garage_dict['owner']
         cars = []
         for item in new_garage_dict['car']:
-            print(set(Car.from_json(dict(item))))
-            cars.append(Car.from_json(dict(item)))
+            cars.append(Car.from_json(dict(item)).car_set)
 
         new_garage = Garage(town=town, places=places, owner=owner, garage_cars=cars)
+        #print ('from_yaml: ', cars)
         return new_garage
 
     @classmethod
@@ -206,7 +203,7 @@ class Garage:
         #garage_cars = set(self.cars)
         garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'car': self.cars}
         print ('garage_data', garage_data)
-        return dict(garage_data)
+        return garage_data
 
 
 
@@ -215,10 +212,10 @@ class Garage:
         Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату yaml
         '''
         yaml = YAML()
-        formatted_garege = self.to_yaml()
+        #formatted_garege = self.to_yaml()
         #print ('set: ', set(formatted_garege))
         with open("garage_result.yaml", "w") as file:
-            yaml.dump(formatted_garege , file)
+            yaml.dump(self.garage_set , file)
 
     #     cars_in_garage = []
     #     for i in self.cars:
@@ -289,7 +286,7 @@ if __name__ == "__main__":
                   producer=random.choice(CARS_PRODUCER),
                   mileage=random.uniform(0, 1000000),
                   )
-        cars.append(car)
+        cars.append(car.car_set)
 
     car1 = Car(price=random.uniform(100.5, 999.5),
                car_type=random.choice(CARS_TYPES),
@@ -304,7 +301,7 @@ if __name__ == "__main__":
 
     print ("CAR1: ", car1)
     print ("CAR2: ", car2)
-    print("set ",car1.create_set())
+
     car1.save_json_into_file()
 
     json_str = car1.save_json_into_str()
@@ -318,7 +315,7 @@ if __name__ == "__main__":
     print ("NEW GARAGE INSTANCE FROM YAML: ",garage1)
     garage1.save_yaml_into_file()
 
-    garage1.to_yaml()
+    #garage1.to_yaml()
 
     #print ("NEW_CAR_FROM_JSON: ", new_car_from_json)
 
