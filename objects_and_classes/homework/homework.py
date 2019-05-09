@@ -58,9 +58,15 @@ class Car:
         json_formatted_str = ''
 
 
+    def create_set(self):
+        return ({'produser':self.producer, 'car_type': self.car_type, 'number': str(self.number),
+                 'price': self.price, 'mileage': self.mileage})
+
     def __repr__(self):
-        return f"\nCar produser: {self.producer}, type: {self.car_type}, " \
-               f"number: {self.number}, price: {self.price}, spend mileage: {self.mileage}"
+        return f"\nproduser: {self.producer}, car_type: {self.car_type}, " \
+               f"number: {self.number}, price: {self.price}, mileage: {self.mileage}"
+
+
 
 
     def __le__(self, other):
@@ -139,7 +145,6 @@ class Garage:
         self.yaml = YAML()
 
 
-
     def __repr__(self):
         return f"\nTown: {self.town}, Places: {self.places}, owner: {self.owner}, car: {self.cars} "
 
@@ -174,8 +179,9 @@ class Garage:
         owner = new_garage_dict['owner']
         cars = []
         for item in new_garage_dict['car']:
-            car_inct = Car.from_json(dict(item))
-            cars.append(car_inct)
+            print(set(Car.from_json(dict(item))))
+            cars.append(Car.from_json(dict(item)))
+
         new_garage = Garage(town=town, places=places, owner=owner, garage_cars=cars)
         return new_garage
 
@@ -195,21 +201,25 @@ class Garage:
             #print("NEW_GARAGE_TYPE: {}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {}".format(type(new_garage), new_garage))
         return new_garage
 
+    def to_yaml(self):
+        # ger_cars = cars_in_garage
+        #garage_cars = set(self.cars)
+        garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'car': self.cars}
+        print ('garage_data', garage_data)
+        return dict(garage_data)
 
 
 
+    def save_yaml_into_file(self):
+        '''
+        Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату yaml
+        '''
+        yaml = YAML()
+        formatted_garege = self.to_yaml()
+        #print ('set: ', set(formatted_garege))
+        with open("garage_result.yaml", "w") as file:
+            yaml.dump(formatted_garege , file)
 
-    # def to_yaml(obj):
-    #     # ger_cars = cars_in_garage
-    #
-    #     garage_data = {'town': obj.town, 'places': obj.places, 'owner':obj.owner, 'cars': [{\
-    #                        'number': obj.cars['number'], 'car produser': obj.cars['producer'],'type': obj.cars['car_type'],\
-    #                        'price': obj.cars['price'], 'spend mileage': obj.cars['mileage']}]}
-    #     return garage_data
-
-
-
-    # def save_yaml_into_file(self):
     #     cars_in_garage = []
     #     for i in self.cars:
     #         cars_in_garage.append(i)
@@ -294,7 +304,7 @@ if __name__ == "__main__":
 
     print ("CAR1: ", car1)
     print ("CAR2: ", car2)
-
+    print("set ",car1.create_set())
     car1.save_json_into_file()
 
     json_str = car1.save_json_into_str()
@@ -306,6 +316,9 @@ if __name__ == "__main__":
 
     garage1 = Garage.load_from_yaml_file()
     print ("NEW GARAGE INSTANCE FROM YAML: ",garage1)
+    garage1.save_yaml_into_file()
+
+    garage1.to_yaml()
 
     #print ("NEW_CAR_FROM_JSON: ", new_car_from_json)
 
