@@ -4,11 +4,11 @@ owner: None
 garage_cars:
 - producer: Chevrolet
   car_type: Luxury Car
-  number: 20aa070e-9162-4345-9c28-b05a24f6641f
+  number: de62a5b8-38c7-4c6b-bba7-4cd05e536291
   price: 940.51
   mileage: 81600.26
 - producer: Ford
   car_type: Truck
-  number: 701de5c9-9740-4dd4-aa3c-516bc8950742
+  number: c4ec3736-c5e8-4a10-915a-b51893c66a09
   price: 228.53
   mileage: 213985.19
