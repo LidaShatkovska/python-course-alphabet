@@ -160,11 +160,11 @@ class Garage:
     def __init__(self, town: string, places: int, garage_cars: List[Car],  owner=None):
         self.town = town
         self.places = places
-        self.cars = garage_cars if garage_cars is not None else []
+        self.garage_cars = garage_cars if garage_cars is not None else []
         self.owner = owner
         self.current = 0
         self.yaml = YAML()
-        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, 'garage_cars': self.cars})
+        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, 'garage_cars': self.garage_cars})
 
 
     def __repr__(self):
@@ -172,31 +172,32 @@ class Garage:
 
 
     def add(self, new_car: string):
-        if len(self.cars) < self.places:
-            self.cars.append(new_car.car_set)
+        if len(self.garage_cars) < self.places:
+            self.garage_cars.append(new_car.car_set)
             return self
         else:
             return ("Garage haven't got any free places")
 
 
     def remove(self, my_car: string):
-        if my_car in self.cars:
-            self.cars.remove(my_car)
+        if my_car in self.garage_cars:
+            self.cagarage_carsrs.remove(my_car)
             print('THE CAR WAS DELETED!')
         return self
 
 
     def hit_hat(self):
-        return round(sum(car['price'] for car in self.cars),2)
+        return round(sum(car['price'] for car in self.garage_cars),2)
 
 
     @classmethod
     def from_yaml(cls, new_garage_dict):
+        print ('neeee',new_garage_dict)
         town = new_garage_dict['town']
         places = new_garage_dict['places']
         owner = new_garage_dict['owner']
         cars = []
-        for item in new_garage_dict['car']:
+        for item in new_garage_dict['garage_cars']:
             cars.append(Car.from_json(dict(item)).car_set)
         new_garage = Garage(town=town, places=places, owner=owner, garage_cars=cars)
         return new_garage
@@ -212,7 +213,7 @@ class Garage:
 
 
     def to_yaml(self):
-        garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'car': self.cars}
+        garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'garage_cars': self.garage_cars}
         return garage_data
 
 
@@ -266,7 +267,7 @@ class Cesar:
 
 
     def cars_count(self):
-        return sum(len(garage.cars) for garage in self.cesar_garages)
+        return sum(len(garage.garage_cars) for garage in self.cesar_garages)
 
 
     def add_car(self, car: string, garage = None):

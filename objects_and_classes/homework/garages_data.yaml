@@ -1,7 +1,7 @@
 town: London
 places: 7
 owner: None
-car:
+garage_cars:
 - number: 4f38d3e2-2a89-4612-847c-43dd96484acf
   producer: Chevrolet
   car_type: Luxury Car
