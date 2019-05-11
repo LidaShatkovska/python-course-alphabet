@@ -71,13 +71,14 @@ Advanced
 Добавити опрацьовку формату ini
 """
 
+
 class Car:
 
     def __init__(self, price: float, car_type: str, producer: str, mileage: float):
-        self.price = round(price,2)
+        self.price = round(price, 2)
         self.car_type = car_type
         self.producer = producer
-        self.mileage = round(mileage,2)
+        self.mileage = round(mileage, 2)
         self.number = uuid.uuid4()
         self.car_set = ({'producer': self.producer, 'car_type': self.car_type, \
                          'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
@@ -104,13 +105,13 @@ class Car:
 
     @staticmethod
     def to_json(obj):
-        car_data = {"price": obj.price, "car_type": obj.car_type, "number": str(obj.number),\
-                    "producer": obj.producer, "mileage": obj.mileage }
+        car_data = {"price": obj.price, "car_type": obj.car_type, "number": str(obj.number), \
+                    "producer": obj.producer, "mileage": obj.mileage}
         return car_data
 
     @classmethod
-    def from_json(cls,car_json_data):
-        price = round(car_json_data['price'],2)
+    def from_json(cls, car_json_data):
+        price = round(car_json_data['price'], 2)
         car_type = car_json_data['car_type']
         producer = car_json_data['producer']
         mileage = round(car_json_data['mileage'], 2)
@@ -132,19 +133,19 @@ class Car:
         with open("cars_data.json", "r") as read_file:
             new_car_dict = json.load(read_file)
             new_car = Car.from_json(new_car_dict)
-            print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_FILE: {}".format(type(new_car),new_car) )
+            print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_FILE: {}".format(type(new_car), new_car))
         return new_car
 
     @classmethod
-    def instance_from_json_str(cls,json_formatted_str):
-        new_car = json.loads(json_formatted_str, object_hook= Car.from_json)
+    def instance_from_json_str(cls, json_formatted_str):
+        new_car = json.loads(json_formatted_str, object_hook=Car.from_json)
         print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_STR: {}".format(type(new_car), new_car))
         return new_car
 
 
 class Garage:
 
-    def __init__(self, town: str, places: int, garage_cars: List[Car],  owner=None):
+    def __init__(self, town: str, places: int, garage_cars: List[Car], owner=None):
         self.town = town
         self.places = places
         self.garage_cars = garage_cars if garage_cars is not None else []
@@ -169,7 +170,7 @@ class Garage:
         return self
 
     def hit_hat(self):
-        return round(sum(car['price'] for car in self.garage_cars),2)
+        return round(sum(car['price'] for car in self.garage_cars), 2)
 
     @classmethod
     def from_yaml(cls, new_garage_dict):
@@ -191,12 +192,12 @@ class Garage:
         return new_garage
 
     def to_yaml(self):
-        garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'garage_cars': self.garage_cars}
+        garage_data = {'town': self.town, 'places': self.places, 'owner': self.owner, 'garage_cars': self.garage_cars}
         return garage_data
 
     def save_yaml_into_file(self):
         with open("garage_result.yaml", "w") as file:
-            yaml.dump(self.garage_set , file)
+            yaml.dump(self.garage_set, file)
 
     def save_yaml_into_str(self):
         garage_data = Garage.to_yaml(self)
@@ -217,7 +218,7 @@ class Cesar:
         self.name = name
         self.cesar_garages = cesar_garages if cesar_garages is not None else []
         self.register_id = uuid.uuid4()
-        self.cesar_set = ({'name': self.name, 'register_id': self.register_id, 'cesar_garages': self.cesar_garages })
+        self.cesar_set = ({'name': self.name, 'register_id': self.register_id, 'cesar_garages': self.cesar_garages})
 
     def __repr__(self):
         return f"CESAR NAME: {self.name}, " \
@@ -229,10 +230,10 @@ class Cesar:
 
     @staticmethod
     def compare_cesar(cesar_list: list):
-        return max((cesar for cesar in cesar_list), key=lambda x: x.hit_hat() )
+        return max((cesar for cesar in cesar_list), key=lambda x: x.hit_hat())
 
     def hit_hat(self):
-        return round(sum(item.hit_hat() for item in self.cesar_garages),2)
+        return round(sum(item.hit_hat() for item in self.cesar_garages), 2)
 
     def garages_count(self):
         return len(self.cesar_garages)
@@ -240,9 +241,9 @@ class Cesar:
     def cars_count(self):
         return sum(len(garage.garage_cars) for garage in self.cesar_garages)
 
-    def add_car(self, car: string, garage = None):
+    def add_car(self, car: string, garage=None):
         if garage is None:
-            return max(self.cesar_garages, key = lambda x:(x.places-len(x.cars))).add(car)
+            return max(self.cesar_garages, key=lambda x: (x.places - len(x.cars))).add(car)
         else:
             return garage.add(car)
 
@@ -268,7 +269,6 @@ class Cesar:
         return new_cesar
 
 
-
 if __name__ == "__main__":
 
     cars = []
@@ -291,10 +291,8 @@ if __name__ == "__main__":
                mileage=random.uniform(0, 1000000),
                )
 
-    #print ("CAR1: ", car1)
-    #print ("CAR2: ", car2)
-
-
+    # print ("CAR1: ", car1)
+    # print ("CAR2: ", car2)
 
     # # CHECK UUID CHANGE
     # print ("\n------CHECK UUID CHANGE--------")
@@ -324,7 +322,7 @@ if __name__ == "__main__":
     # if car1.price != car2.price:
     #     print("price car {} isn't equal to price car {}".format(car1.producer, car2.producer))
 
-    #print ("\n-----CHECK GARAGE------")
+    # print ("\n-----CHECK GARAGE------")
     CESAR_NAME = ["Oleg", "Vitaliya", "Marina", "Grisha", "Petr"]
     cesars = []
     for cesar_counter in range(random.randint(1, 1)):
@@ -343,22 +341,22 @@ if __name__ == "__main__":
                 raise ValueError("Count cars more then count place. RUN PGOGRAM AGAIN")
             else:
                 garage = Garage(town=random.choice(TOWNS),
-                                    places=random_place,
-                                    garage_cars=get_car)
+                                places=random_place,
+                                garage_cars=get_car)
             garages.append(garage)
-                # print (garage)
-                # print("\nCOUNT CARS: ", len(get_car))
-                # print("COUNT PLACE: ", random_place)
-                # print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
+            # print (garage)
+            # print("\nCOUNT CARS: ", len(get_car))
+            # print("COUNT PLACE: ", random_place)
+            # print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
 
     cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
     cesars.append(cesar)
 
     print ("\n-----CHECK CESAR------")
     for item in cesars:
-          print(item, "\n")
+        print(item, "\n")
 
-#-------HW5 CHECK------------
+    # -------HW5 CHECK------------
 
     print ('\n----JSON------')
     car1.save_json_into_file()
@@ -383,7 +381,7 @@ if __name__ == "__main__":
     new_cesar_str = Cesar.instance_from_pickle_str(pickle_str)
     print ('\nNEW_CESAR_FROM_PICKLE_STR', '\n', new_cesar_str)
 
-    #print ("THE RICHEST CESAR IS: ", (Cesar.compare_cesar(cesars)).name)
+    # print ("THE RICHEST CESAR IS: ", (Cesar.compare_cesar(cesars)).name)
 
     # print("\n----CHECK ADD CARS----------")
     # print("BEFORE ADD NEW CAR: ", garages[0])
