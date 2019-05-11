@@ -3,14 +3,19 @@ import random
 import string
 import uuid
 import json
-import related
+import pickle
+import codecs
+
 from ruamel.yaml import YAML
 from typing import List
 from constants import CARS_TYPES
 from constants import CARS_PRODUCER
 from constants import TOWNS
 
+yaml = YAML()
+
 """
+---HW4-------
 Вам небхідно написати 3 класи. Колекціонери Гаражі та Автомобілі.
 Звязкок наступний один колекціонер може мати багато гаражів.
 В одному гаражі може знаходитися багато автомобілів.
@@ -46,6 +51,26 @@ from constants import TOWNS
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
 
+"""
+---HW5----
+Для попереднього домашнього завдання.
+
+Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату
+yaml, json, pickle відповідно.
+
+Для класів Колекціонер Машина і Гараж написати методи, які конвертують обєкт в строку формату
+yaml, json, pickle відповідно.
+
+Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
+з (yaml, json, pickle) строки відповідно
+
+Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
+з (yaml, json, pickle) файлу відповідно
+
+Advanced
+Добавити опрацьовку формату ini
+"""
+
 class Car:
 
     def __init__(self, price: float, car_type: string, producer: string, mileage: float):
@@ -54,15 +79,12 @@ class Car:
         self.producer = producer
         self.mileage = round(mileage,2)
         self.number = uuid.uuid4()
-        self.car_set = ({'produser': self.producer, 'car_type': self.car_type, 'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
-        json_formatted_str = ''
+        self.car_set = ({'producer': self.producer, 'car_type': self.car_type, 'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
 
 
     def __repr__(self):
-        return f"\nproduser: {self.producer}, car_type: {self.car_type}, " \
+        return f"\nproducer: {self.producer}, car_type: {self.car_type}, " \
                f"number: {self.number}, price: {self.price}, mileage: {self.mileage}"
-
-
 
 
     def __le__(self, other):
@@ -85,11 +107,13 @@ class Car:
         self.number = uuid.uuid4()
         return self.number
 
+
     @staticmethod
     def to_json(obj):
         car_data = {"price": obj.price, "car_type": obj.car_type, "producer": obj.producer,  \
                     "mileage": obj.mileage, "number": str(obj.number) }
         return car_data
+
 
     @classmethod
     def from_json(cls,car_json_data):
@@ -102,28 +126,29 @@ class Car:
         return new_car
 
 
-
     def save_json_into_file(self):
         car_data = Car.to_json(self)
         with open("cars_data.json", 'w') as file:
             json.dump(car_data, file)
+
 
     def save_json_into_str(self):
         car_data = Car.to_json(self)
         json_formatted_str = json.dumps(car_data)
         return json_formatted_str
 
+
     @classmethod
-    def load_from_json_file(cls):
+    def instance_from_json_file(cls):
         with open("cars_data.json", "r") as read_file:
             new_car_dict = json.load(read_file)
             new_car = Car.from_json(new_car_dict)
             print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_FILE: {}".format(type(new_car),new_car) )
         return new_car
 
+
     @classmethod
-    def load_from_json_str(cls,json_formatted_str):
-        # restored_data = eval(json_formatted_str)
+    def instance_from_json_str(cls,json_formatted_str):
         new_car = json.loads(json_formatted_str, object_hook= Car.from_json)
         print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_STR: {}".format(type(new_car), new_car))
         return new_car
@@ -139,19 +164,19 @@ class Garage:
         self.owner = owner
         self.current = 0
         self.yaml = YAML()
-        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, 'car': self.cars})
+        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, 'garage_cars': self.cars})
 
 
     def __repr__(self):
-        return f"\nTown: {self.town}, Places: {self.places}, owner: {self.owner}, car: {self.cars} "
+        return f"\n{self.garage_set} "
 
 
     def add(self, new_car: string):
         if len(self.cars) < self.places:
-            self.cars.append(new_car)
+            self.cars.append(new_car.car_set)
             return self
         else:
-            return f"Garage haven't got any free places"
+            return ("Garage haven't got any free places")
 
 
     def remove(self, my_car: string):
@@ -162,79 +187,52 @@ class Garage:
 
 
     def hit_hat(self):
-        return round(sum(car.price for car in self.cars),2)
+        return round(sum(car['price'] for car in self.cars),2)
+
 
     @classmethod
     def from_yaml(cls, new_garage_dict):
-
-        '''
-        CREATE GARAGE INSTANCE
-        '''
-
         town = new_garage_dict['town']
         places = new_garage_dict['places']
         owner = new_garage_dict['owner']
         cars = []
         for item in new_garage_dict['car']:
             cars.append(Car.from_json(dict(item)).car_set)
-
         new_garage = Garage(town=town, places=places, owner=owner, garage_cars=cars)
-        #print ('from_yaml: ', cars)
         return new_garage
 
+
     @classmethod
-    def load_from_yaml_file(cls):
-
-        '''
-        Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
-        з yaml файлу відповідно
-        '''
-
-        yaml = YAML()
+    def instance_from_yaml_file(cls):
         with open("garages_data.yaml", "r") as read_file:
             new_garage_dict = yaml.load(read_file)
             new_garage = Garage.from_yaml(new_garage_dict)
-            #print("NEW_GARAGE_TYPE: {}\nNEW_GARAGE_FROM_YAML_FILE: {}".format(type(new_garage_dict), new_garage_dict))
-            #print("NEW_GARAGE_TYPE: {}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {}".format(type(new_garage), new_garage))
+            print("NEW_GARAGE_TYPE: {}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {}".format(type(new_garage), new_garage))
         return new_garage
 
+
     def to_yaml(self):
-        # ger_cars = cars_in_garage
-        #garage_cars = set(self.cars)
         garage_data = {'town': self.town, 'places': self.places, 'owner':self.owner, 'car': self.cars}
-        print ('garage_data', garage_data)
         return garage_data
 
 
-
     def save_yaml_into_file(self):
-        '''
-        Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату yaml
-        '''
-        yaml = YAML()
-        #formatted_garege = self.to_yaml()
-        #print ('set: ', set(formatted_garege))
         with open("garage_result.yaml", "w") as file:
             yaml.dump(self.garage_set , file)
 
-    #     cars_in_garage = []
-    #     for i in self.cars:
-    #         cars_in_garage.append(i)
-    #
-    #     #print(related.to_yaml(self,related.SetField(cars_in_garage)))
-    #
-    #     garage_data =  Garage.to_yaml(self,cars_in_garage)
-    #
-    #     # with open("garages_data.yaml", 'w') as file:
-    #     #     self.yaml.dump(garage_data, file)
-    #     yaml = YAML()
-    #     with open("garage_result.yaml", "w") as file:
-    #         for item in self.cars:
-    #               yaml.dump(item , file)
+
+    def save_yaml_into_str(self):
+        garage_data = Garage.to_yaml(self)
+        yaml_formatted_str = str(garage_data)
+        return yaml_formatted_str
 
 
-
-
+    @staticmethod
+    def instance_from_yaml_str(yaml_formatted_str: str):
+        yaml_str = yaml.load(yaml_formatted_str)
+        new_instance = Garage.from_yaml(yaml_str)
+        print("INSTANCE FROM YAML STR:", type(new_instance), new_instance)
+        return new_instance
 
 class Cesar:
 
@@ -242,6 +240,7 @@ class Cesar:
         self.name = name
         self.cesar_garages = cesar_garages if cesar_garages is not None else []
         self.register_id = uuid.uuid4()
+        self.cesar_set = ({'name': self.name, 'register_id': self.register_id, 'cesar_garages': self.cesar_garages })
 
 
     def __repr__(self):
@@ -251,6 +250,7 @@ class Cesar:
                f"\nCOUNT CAR IN ALL GARAGES:  {self.cars_count()}, " \
                f"\nSUM PRICE ALL CAR:  {self.hit_hat()}" \
                f"\nGARAGE: {self.cesar_garages}, "
+
 
     @staticmethod
     def compare_cesar(cesar_list: list):
@@ -276,6 +276,31 @@ class Cesar:
             return garage.add(car)
 
 
+    def pickle_to_str(self):
+        pickle_formatted_str = codecs.encode(pickle.dumps(self), "base64").decode()
+        return pickle_formatted_str
+
+
+    def pickle_to_file(self):
+        pickle_formatted_str = self.pickle_to_str()
+        with open("pickle_data.txt", "wb") as file:
+            pickle.dump(pickle_formatted_str, file)
+
+
+    @staticmethod
+    def instance_from_pickle_str(pickle_str: str):
+        new_cesar = pickle.loads(codecs.decode(pickle_str.encode(), "base64"))
+        return new_cesar
+
+
+    @classmethod
+    def instance_from_pickle_file(cls):
+        with open('pickle_data.txt', 'rb') as file:
+            pickle_str = pickle.load(file)
+            new_cesar = Cesar.instance_from_pickle_str(pickle_str)
+        return new_cesar
+
+
 
 if __name__ == "__main__":
 
@@ -299,25 +324,9 @@ if __name__ == "__main__":
                mileage=random.uniform(0, 1000000),
                )
 
-    print ("CAR1: ", car1)
-    print ("CAR2: ", car2)
+    #print ("CAR1: ", car1)
+    #print ("CAR2: ", car2)
 
-    car1.save_json_into_file()
-
-    json_str = car1.save_json_into_str()
-    #print ("TYPE: {}\nJSON_STR: {}".format(type(json_str), json_str))
-
-    #new_car_from_json_file = Car.load_from_json_file()
-
-    #Car.load_from_json_str(json_str)
-
-    garage1 = Garage.load_from_yaml_file()
-    print ("NEW GARAGE INSTANCE FROM YAML: ",garage1)
-    garage1.save_yaml_into_file()
-
-    #garage1.to_yaml()
-
-    #print ("NEW_CAR_FROM_JSON: ", new_car_from_json)
 
 
     # # CHECK UUID CHANGE
@@ -347,12 +356,11 @@ if __name__ == "__main__":
     #
     # if car1.price != car2.price:
     #     print("price car {} isn't equal to price car {}".format(car1.producer, car2.producer))
-    #
-    #
-    print ("\n-----CHECK GARAGE------")
+
+    #print ("\n-----CHECK GARAGE------")
     CESAR_NAME = ["Oleg", "Vitaliya", "Marina", "Grisha", "Petr"]
     cesars = []
-    for cesar_counter in range(random.randint(2, 3)):
+    for cesar_counter in range(random.randint(1, 1)):
         garages = []
         for garage_counter in range(random.randint(1, 3)):
             count_cars = random.randint(1, 4)
@@ -364,34 +372,54 @@ if __name__ == "__main__":
                     cars.remove(i)
                     get_car.append(i)
 
-                if count_cars > random_place:
-                    raise ValueError("Count cars more then count place. RUN PGOGRAM AGAIN")
-                else:
-                    garage = Garage(town=random.choice(TOWNS),
+            if count_cars > random_place:
+                raise ValueError("Count cars more then count place. RUN PGOGRAM AGAIN")
+            else:
+                garage = Garage(town=random.choice(TOWNS),
                                     places=random_place,
                                     garage_cars=get_car)
+                # print (garage)
+                # print("\nCOUNT CARS: ", len(get_car))
+                # print("COUNT PLACE: ", random_place)
+                # print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
+
             garages.append(garage)
-            print (garage)
+    cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
+    cesars.append(cesar)
+
+    print ("\n-----CHECK CESAR------")
+    for item in cesars:
+          print(item, "\n")
+
+#-------HW5 CHECK------------
+
+    print ('\n----JSON------')
+    car1.save_json_into_file()
+    json_str = car1.save_json_into_str()
+    new_car_file = Car.instance_from_json_file()
+    print()
+    new_car_str = Car.instance_from_json_str(json_str)
+
+    print ('\n----YAML------')
+    garage1 = Garage.instance_from_yaml_file()
+    print()
+    garage1.save_yaml_into_file()
+    yaml_str = garage1.save_yaml_into_str()
+    Garage.instance_from_yaml_str(yaml_str)
+
+    print ("\n-----PICKLE------")
+
+    cesars[0].pickle_to_file()
+    new_cesar_file = Cesar.instance_from_pickle_file()
+    print ('NEW_CESAR_FROM_PICKLE_FILE:', '\n', new_cesar_file)
+    pickle_str = cesar.pickle_to_str()
+
+    new_cesar_str = Cesar.instance_from_pickle_str(pickle_str)
+    print ('\nNEW_CESAR_FROM_PICKLE_STR', '\n', new_cesar_str)
 
 
-   # garages[0].save_yaml_into_file()
+    #print ("THE RICHEST CESAR IS: ", (Cesar.compare_cesar(cesars)).name)
 
-
-    #         #print("\nCOUNT CARS: ", len(get_car))
-    #         #print("COUNT PLACE: ", random_place)
-    #         #print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
-    #
-    #
-    #
-    #     cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
-    #     cesars.append(cesar)
-    #
-    # print ("\n-----CHECK CESAR------")
-    # for item in cesars:
-    #     print(item, "\n")
-    #
-    # print ("THE RICHEST CESAR IS: ",(Cesar.compare_cesar(cesars)).name)
-    #
     # print("\n----CHECK ADD CARS----------")
     # print("BEFORE ADD NEW CAR: ", garages[0])
     # print("PRICE ALL CARS IN GARAGE BEFORE ADD CAR: ", garages[0].hit_hat())
@@ -405,6 +433,5 @@ if __name__ == "__main__":
     #
     # print("\nADD CAR TO FREE GARAGE: ", cesars[0].add_car(car1))
     # print("\nADD CAR TO SELECTED GARAGE: ", cesars[0].add_car(car2, garages[0]))
-
 
 print ("-----------------------------------")
