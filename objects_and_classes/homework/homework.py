@@ -192,7 +192,6 @@ class Garage:
 
     @classmethod
     def from_yaml(cls, new_garage_dict):
-        print ('neeee',new_garage_dict)
         town = new_garage_dict['town']
         places = new_garage_dict['places']
         owner = new_garage_dict['owner']
