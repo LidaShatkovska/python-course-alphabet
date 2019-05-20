@@ -115,7 +115,7 @@ class Car:
         car_type = car_json_data['car_type']
         producer = car_json_data['producer']
         mileage = round(car_json_data['mileage'], 2)
-        new_car = Car(price=price, car_type=car_type, producer=producer, mileage=mileage)
+        new_car = cls(price=price, car_type=car_type, producer=producer, mileage=mileage)
         return new_car
 
     def save_json_into_file(self):
@@ -132,14 +132,14 @@ class Car:
     def instance_from_json_file(cls):
         with open("cars_data.json", "r") as read_file:
             new_car_dict = json.load(read_file)
-            new_car = Car.from_json(new_car_dict)
-            print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_FILE: {}".format(type(new_car), new_car))
+            new_car = cls.from_json(new_car_dict)
+            print(f"NEW_CAR_TYPE: {type(new_car)}\nNEW_CAR_FROM_JSON_FILE: {new_car}")
         return new_car
 
     @classmethod
     def instance_from_json_str(cls, json_formatted_str):
-        new_car = json.loads(json_formatted_str, object_hook=Car.from_json)
-        print("NEW_CAR_TYPE: {}\nNEW_CAR_FROM_JSON_STR: {}".format(type(new_car), new_car))
+        new_car = json.loads(json_formatted_str, object_hook=cls.from_json)
+        print(f"NEW_CAR_TYPE: {type(new_car)}\nNEW_CAR_FROM_JSON_STR: {new_car}")
         return new_car
 
 
@@ -161,12 +161,12 @@ class Garage:
             self.garage_cars.append(new_car.car_set)
             return self
         else:
-            return ("Garage haven't got any free places")
+            return "Garage haven't got any free places"
 
     def remove(self, my_car: str):
         if my_car in self.garage_cars:
             self.cagarage_cars.remove(my_car)
-            print('THE CAR WAS DELETED!')
+            print(f"THE CAR WAS DELETED!")
         return self
 
     def hit_hat(self):
@@ -180,15 +180,15 @@ class Garage:
         cars = []
         for item in new_garage_dict['garage_cars']:
             cars.append(Car.from_json(dict(item)).car_set)
-        new_garage = Garage(town=town, places=places, owner=owner, garage_cars=cars)
+        new_garage = cls(town=town, places=places, owner=owner, garage_cars=cars)
         return new_garage
 
     @classmethod
     def instance_from_yaml_file(cls):
         with open("garages_data.yaml", "r") as read_file:
             new_garage_dict = yaml.load(read_file)
-            new_garage = Garage.from_yaml(new_garage_dict)
-            print("NEW_GARAGE_TYPE: {}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {}".format(type(new_garage), new_garage))
+            new_garage = cls.from_yaml(new_garage_dict)
+            print(f"NEW_GARAGE_TYPE: {type(new_garage)}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {new_garage}")
         return new_garage
 
     def to_yaml(self):
@@ -208,7 +208,7 @@ class Garage:
     def instance_from_yaml_str(yaml_formatted_str: str):
         yaml_str = yaml.load(yaml_formatted_str)
         new_instance = Garage.from_yaml(yaml_str)
-        print("INSTANCE FROM YAML STR:", type(new_instance), new_instance)
+        print(f"INSTANCE FROM YAML STR: {type(new_instance)}, {new_instance}")
         return new_instance
 
 
@@ -265,7 +265,7 @@ class Cesar:
     def instance_from_pickle_file(cls):
         with open('pickle_data.txt', 'rb') as file:
             pickle_str = pickle.load(file)
-            new_cesar = Cesar.instance_from_pickle_str(pickle_str)
+            new_cesar = cls.instance_from_pickle_str(pickle_str)
         return new_cesar
 
 
@@ -291,38 +291,34 @@ if __name__ == "__main__":
                mileage=random.uniform(0, 1000000),
                )
 
-    # print ("CAR1: ", car1)
-    # print ("CAR2: ", car2)
+    # print (f"CAR1: {car1}")
+    # print (f"CAR2: {car2}")
 
     # # CHECK UUID CHANGE
-    # print ("\n------CHECK UUID CHANGE--------")
+    # print (f"\n------CHECK UUID CHANGE--------")
     # old_number = car1.number
     # car1.number = car1.change_UUID()
-    # print("The number {} of car {} was changed on: {}".format(old_number, car1.producer, car1.number))
+    # print(f"The number {old_number} of car {car1.producer} was changed on: {car1.number}")
     #
     # # CHECK COMPARE
-    # print ("\n-----CHECK COMPARE-------")
+    # print (f"\n-----CHECK COMPARE-------")
     # if car1.price <= car2.price:
-    #     print(
-    #         "price {} car {} biggest then price {} car {}".format(car2.price, car2.producer, car1.price, car1.producer))
+    #     print(f"price {car2.price} car {car2.producer} biggest then price {car1.price} car {car1.producer}")
     # else:
-    #     print(
-    #         "price {} car {} biggest then price {} car {}".format(car1.price, car1.producer, car2.price, car2.producer))
+    #     print(f"price {car1.price} car {car1.producer} biggest then price {car2.price} car {car2.producer}")
     #
     # if car1.price < car2.price:
-    #     print(
-    #         "car {} price {} cheaper then car {} price {}".format(car1.producer, car1.price, car2.producer, car2.price))
+    #     print(f"car {car1.producer} price {car1.price} cheaper then car {car2.producer} price {car2.price}")
     # else:
-    #     print("car {} cheaper then car {}".format(car2.producer, car1.producer))
+    #     print(f"car {car2.producer} cheaper then car {car1.producer}")
     #
     # if car1.price == car2.price:
-    #     print(
-    #         "price {} car {} is equal to price {} car {}".format(car1.price, car1.producer, car2.price, car2.producer))
+    #     print(f"price {car1.price} car {car1.producer} is equal to price {car2.price} car {car2.producer}")
     #
     # if car1.price != car2.price:
-    #     print("price car {} isn't equal to price car {}".format(car1.producer, car2.producer))
+    #     print(f"price car {car1.producer} isn't equal to price car {car2.producer}")
 
-    # print ("\n-----CHECK GARAGE------")
+    # print (а"\n-----CHECK GARAGE------")
     CESAR_NAME = ["Oleg", "Vitaliya", "Marina", "Grisha", "Petr"]
     cesars = []
     for cesar_counter in range(random.randint(1, 1)):
@@ -345,56 +341,56 @@ if __name__ == "__main__":
                                 garage_cars=get_car)
             garages.append(garage)
             # print (garage)
-            # print("\nCOUNT CARS: ", len(get_car))
-            # print("COUNT PLACE: ", random_place)
-            # print("PRICE ALL CAR IN GARAGES: ", garage.hit_hat())
+            # print(f"\nCOUNT CARS: {len(get_car)}")
+            # print(f"COUNT PLACE: {random_place}")
+            # print(f"PRICE ALL CAR IN GARAGES: {garage.hit_hat()}")
 
     cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
     cesars.append(cesar)
 
-    print ("\n-----CHECK CESAR------")
+    print (f"\n-----CHECK CESAR------")
     for item in cesars:
-        print(item, "\n")
+        print(f"{item}\n")
 
     # -------HW5 CHECK------------
 
-    print ('\n----JSON------')
+    print (f'\n----JSON------')
     car1.save_json_into_file()
     json_str = car1.save_json_into_str()
     new_car_file = Car.instance_from_json_file()
     print()
     new_car_str = Car.instance_from_json_str(json_str)
 
-    print ('\n----YAML------')
+    print (f'\n----YAML------')
     garage1 = Garage.instance_from_yaml_file()
     print()
     garage1.save_yaml_into_file()
     yaml_str = garage1.save_yaml_into_str()
     Garage.instance_from_yaml_str(yaml_str)
 
-    print ("\n-----PICKLE------")
+    print (f"\n-----PICKLE------")
     cesars[0].pickle_to_file()
     new_cesar_file = Cesar.instance_from_pickle_file()
-    print ('NEW_CESAR_FROM_PICKLE_FILE:', '\n', new_cesar_file)
+    print (f"NEW_CESAR_FROM_PICKLE_FILE: {new_cesar_file}\n")
     pickle_str = cesar.pickle_to_str()
 
     new_cesar_str = Cesar.instance_from_pickle_str(pickle_str)
-    print ('\nNEW_CESAR_FROM_PICKLE_STR', '\n', new_cesar_str)
+    print (f"\nNEW_CESAR_FROM_PICKLE_STR {new_cesar_str}\n")
 
-    # print ("THE RICHEST CESAR IS: ", (Cesar.compare_cesar(cesars)).name)
+    # print (f"THE RICHEST CESAR IS: {(Cesar.compare_cesar(cesars)).name}")
 
-    # print("\n----CHECK ADD CARS----------")
-    # print("BEFORE ADD NEW CAR: ", garages[0])
-    # print("PRICE ALL CARS IN GARAGE BEFORE ADD CAR: ", garages[0].hit_hat())
+    # print(f"\n----CHECK ADD CARS----------")
+    # print(f"BEFORE ADD NEW CAR:  {garages[0]}")
+    # print(f"PRICE ALL CARS IN GARAGE BEFORE ADD CAR: {garages[0].hit_hat()}")
     #
-    # print("\nAFTER ADD NEW CAR: ", garages[0].add(car1))
-    # print("PRICE ALL CARS IN GARAGE AFTER ADD CAR: ", garages[0].hit_hat())
+    # print(f"\nAFTER ADD NEW CAR: {garages[0].add(car1)}")
+    # print(f"PRICE ALL CARS IN GARAGE AFTER ADD CAR: {garages[0].hit_hat()}")
     #
-    # print("\nBEFORE REMOVE NEW CAR: ", garages[0])
-    # print("\nCAR FOR REMOVE: ", garages[0].cars[0])
-    # print("\nAFTER REMOVE NEW CAR: ", garages[0].remove(garages[0].cars[0]))
+    # print(f"\nBEFORE REMOVE NEW CAR: {garages[0]}")
+    # print(f"\nCAR FOR REMOVE: {garages[0].cars[0]}")
+    # print(f"\nAFTER REMOVE NEW CAR: {garages[0].remove(garages[0].cars[0])}")
     #
-    # print("\nADD CAR TO FREE GARAGE: ", cesars[0].add_car(car1))
-    # print("\nADD CAR TO SELECTED GARAGE: ", cesars[0].add_car(car2, garages[0]))
+    # print(f"\nADD CAR TO FREE GARAGE: {cesars[0].add_car(car1)}")
+    # print(f"\nADD CAR TO SELECTED GARAGE: {cesars[0].add_car(car2, garages[0])}")
 
 print ("-----------------------------------")
