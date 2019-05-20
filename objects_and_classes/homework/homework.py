@@ -23,7 +23,8 @@ yaml = YAML()
     price - значення типу float. Всі ціни за дефолтом в одній валюті.
     type - одне з перечисленних значеннь з CARS_TYPES в docs.
     producer - одне з перечисленних значеннь в CARS_PRODUCER.
-    number - значення типу UUID. Присвоюється автоматично при створенні автомобілю.
+    number - значення типу UUID.
+    Присвоюється автоматично при створенні автомобілю.
     mileage - значення типу float. Пробіг автомобіля в кілометрах.
     Автомобілі можна перівнювати між собою за ціною.
     При виводі(logs, print) автомобілю повинні зазначатися всі його атрибути.
@@ -32,7 +33,8 @@ yaml = YAML()
 Гараж має наступні характеристики:
     town - одне з перечислениз значеннь в TOWNS
     cars - список з усіх автомобілів які знаходяться в гаражі
-    places - значення типу int. Максимально допустима кількість автомобілів в гаражі
+    places - значення типу int.
+    Максимально допустима кількість автомобілів в гаражі
     owner - значення типу UUID. За дефолтом None.
     Повинен мати реалізованими наступні методи
     add(car) -> Добавляє машину в гараж, якщо є вільні місця
@@ -40,13 +42,15 @@ yaml = YAML()
     hit_hat() -> Вертає сумарну вартість всіх машин в гаражі
 Колекціонер має наступні характеристики
     name - значення типу str. Його ім'я
-    garages - список з усіх гаражів які належать цьому Колекціонеру. Кількість гаражів за замовчуванням - 0
+    garages - список з усіх гаражів які належать цьому Колекціонеру.
+    Кількість гаражів за замовчуванням - 0
     register_id - UUID; Унікальна айдішка Колекціонера.
     Повинні бути реалізовані наступні методи:
     hit_hat() - повертає ціну всіх його автомобілів.
     garages_count() - вертає кількість гаріжів.
     сars_count() - вертає кількість машиню
-    add_car() - додає машину у вибраний гараж. Якщо гараж не вказаний, то додає в гараж, де найбільше вільних місць.
+    add_car() - додає машину у вибраний гараж.
+    Якщо гараж не вказаний, то додає в гараж, де найбільше вільних місць.
     Якщо вільних місць немає повинне вивести повідомлення про це.
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
@@ -55,17 +59,17 @@ yaml = YAML()
 ---HW5----
 Для попереднього домашнього завдання.
 
-Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату
-yaml, json, pickle відповідно.
+Для класів Колекціонер Машина і Гараж написати методи,
+які зберігають стан обєкту в файли формату yaml, json, pickle відповідно.
 
-Для класів Колекціонер Машина і Гараж написати методи, які конвертують обєкт в строку формату
-yaml, json, pickle відповідно.
+Для класів Колекціонер Машина і Гараж написати методи, які конвертують
+обєкт в строку формату yaml, json, pickle відповідно.
 
-Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
-з (yaml, json, pickle) строки відповідно
+Для класу Колекціонер Машина і Гараж написати методи, які створюють
+інстанс обєкту з (yaml, json, pickle) строки відповідно
 
-Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
-з (yaml, json, pickle) файлу відповідно
+Для класу Колекціонер Машина і Гараж написати методи, які створюють
+інстанс обєкту з (yaml, json, pickle) файлу відповідно
 
 Advanced
 Добавити опрацьовку формату ini
@@ -74,18 +78,21 @@ Advanced
 
 class Car:
 
-    def __init__(self, price: float, car_type: str, producer: str, mileage: float):
+    def __init__(self, price: float, car_type: str,
+                 producer: str, mileage: float):
         self.price = round(price, 2)
         self.car_type = car_type
         self.producer = producer
         self.mileage = round(mileage, 2)
         self.number = uuid.uuid4()
         self.car_set = ({'producer': self.producer, 'car_type': self.car_type,
-                         'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
+                         'number': str(self.number), 'price': self.price,
+                         'mileage': self.mileage})
 
     def __repr__(self):
         return f"\nproducer: {self.producer}, car_type: {self.car_type}, " \
-               f"number: {self.number}, price: {self.price}, mileage: {self.mileage}"
+               f"number: {self.number}, price: {self.price}, " \
+               f"mileage: {self.mileage}"
 
     def __le__(self, other):
         return self.price <= other.price
@@ -105,8 +112,11 @@ class Car:
 
     @staticmethod
     def to_json(obj):
-        car_data = {"price": obj.price, "car_type": obj.car_type, "number": str(obj.number),
-                    "producer": obj.producer, "mileage": obj.mileage}
+        car_data = {"price": obj.price,
+                    "car_type": obj.car_type,
+                    "number": str(obj.number),
+                    "producer": obj.producer,
+                    "mileage": obj.mileage}
         return car_data
 
     @classmethod
@@ -115,7 +125,8 @@ class Car:
         car_type = car_json_data['car_type']
         producer = car_json_data['producer']
         mileage = round(car_json_data['mileage'], 2)
-        new_car = cls(price=price, car_type=car_type, producer=producer, mileage=mileage)
+        new_car = cls(price=price, car_type=car_type,
+                      producer=producer, mileage=mileage)
         return new_car
 
     def save_json_into_file(self):
@@ -133,24 +144,29 @@ class Car:
         with open("cars_data.json", "r") as read_file:
             new_car_dict = json.load(read_file)
             new_car = cls.from_json(new_car_dict)
-            print(f"NEW_CAR_TYPE: {type(new_car)}\nNEW_CAR_FROM_JSON_FILE: {new_car}")
+            print(f"NEW_CAR_TYPE: {type(new_car)}\n"
+                  f"NEW_CAR_FROM_JSON_FILE: {new_car}")
         return new_car
 
     @classmethod
     def instance_from_json_str(cls, json_formatted_str):
         new_car = json.loads(json_formatted_str, object_hook=cls.from_json)
-        print(f"NEW_CAR_TYPE: {type(new_car)}\nNEW_CAR_FROM_JSON_STR: {new_car}")
+        print(f"NEW_CAR_TYPE: {type(new_car)}\n"
+              f"NEW_CAR_FROM_JSON_STR: {new_car}")
         return new_car
 
 
 class Garage:
 
-    def __init__(self, town: str, places: int, garage_cars: List[Car], owner=None):
+    def __init__(self, town: str, places: int,
+                 garage_cars: List[Car], owner=None):
         self.town = town
         self.places = places
         self.garage_cars = garage_cars if garage_cars is not None else []
         self.owner = owner
-        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner,
+        self.garage_set = ({'town': self.town,
+                            'places': self.places,
+                            'owner': self.owner,
                             'garage_cars': self.garage_cars})
 
     def __repr__(self):
@@ -180,7 +196,8 @@ class Garage:
         cars = []
         for item in new_garage_dict['garage_cars']:
             cars.append(Car.from_json(dict(item)).car_set)
-        new_garage = cls(town=town, places=places, owner=owner, garage_cars=cars)
+        new_garage = cls(town=town, places=places,
+                         owner=owner, garage_cars=cars)
         return new_garage
 
     @classmethod
@@ -188,11 +205,15 @@ class Garage:
         with open("garages_data.yaml", "r") as read_file:
             new_garage_dict = yaml.load(read_file)
             new_garage = cls.from_yaml(new_garage_dict)
-            print(f"NEW_GARAGE_TYPE: {type(new_garage)}\nNEW_INSTANC_GARAGE_FROM_YAML_FILE: {new_garage}")
+            print(f"NEW_GARAGE_TYPE: {type(new_garage)}\n"
+                  f"NEW_INSTANC_GARAGE_FROM_YAML_FILE: {new_garage}")
         return new_garage
 
     def to_yaml(self):
-        garage_data = {'town': self.town, 'places': self.places, 'owner': self.owner, 'garage_cars': self.garage_cars}
+        garage_data = {'town': self.town,
+                       'places': self.places,
+                       'owner': self.owner,
+                       'garage_cars': self.garage_cars}
         return garage_data
 
     def save_yaml_into_file(self):
@@ -218,7 +239,9 @@ class Cesar:
         self.name = name
         self.cesar_garages = cesar_garages if cesar_garages is not None else []
         self.register_id = uuid.uuid4()
-        self.cesar_set = ({'name': self.name, 'register_id': self.register_id, 'cesar_garages': self.cesar_garages})
+        self.cesar_set = ({'name': self.name,
+                           'register_id': self.register_id,
+                           'cesar_garages': self.cesar_garages})
 
     def __repr__(self):
         return f"CESAR NAME: {self.name}, " \
@@ -243,12 +266,15 @@ class Cesar:
 
     def add_car(self, car: string, garage=None):
         if garage is None:
-            return max(self.cesar_garages, key=lambda x: (x.places - len(x.cars))).add(car)
+            return max(self.cesar_garages,
+                       key=lambda x: (x.places - len(x.cars))).add(car)
         else:
             return garage.add(car)
 
     def pickle_to_str(self):
-        pickle_formatted_str = codecs.encode(pickle.dumps(self), "base64").decode()
+        pickle_formatted_str = codecs\
+                                     .encode(pickle.dumps(self), "base64")\
+                                     .decode()
         return pickle_formatted_str
 
     def pickle_to_file(self):
@@ -298,25 +324,31 @@ if __name__ == "__main__":
     # print (f"\n------CHECK UUID CHANGE--------")
     # old_number = car1.number
     # car1.number = car1.change_UUID()
-    # print(f"The number {old_number} of car {car1.producer} was changed on: {car1.number}")
+    # print(f"The number {old_number} of car {car1.producer} "
+    #       f"was changed on: {car1.number}")
     #
     # # CHECK COMPARE
     # print (f"\n-----CHECK COMPARE-------")
     # if car1.price <= car2.price:
-    #     print(f"price {car2.price} car {car2.producer} biggest then price {car1.price} car {car1.producer}")
+    #      print(f"price {car2.price} car {car2.producer} biggest "
+    #            f"then price {car1.price} car {car1.producer}")
     # else:
-    #     print(f"price {car1.price} car {car1.producer} biggest then price {car2.price} car {car2.producer}")
+    #      print(f"price {car1.price} car {car1.producer} biggest"
+    #            f"then price {car2.price} car {car2.producer}")
     #
     # if car1.price < car2.price:
-    #     print(f"car {car1.producer} price {car1.price} cheaper then car {car2.producer} price {car2.price}")
+    #      print(f"car {car1.producer} price {car1.price}"
+    #            f"cheaper then car {car2.producer} price {car2.price}")
     # else:
     #     print(f"car {car2.producer} cheaper then car {car1.producer}")
     #
     # if car1.price == car2.price:
-    #     print(f"price {car1.price} car {car1.producer} is equal to price {car2.price} car {car2.producer}")
+    #      print(f"price {car1.price} car {car1.producer} "
+    #            f"is equal to price {car2.price} car {car2.producer}")
     #
     # if car1.price != car2.price:
-    #     print(f"price car {car1.producer} isn't equal to price car {car2.producer}")
+    #      print(f"price car {car1.producer} "
+    #            f"isn't equal to price car {car2.producer}")
 
     # print (а"\n-----CHECK GARAGE------")
     CESAR_NAME = ["Oleg", "Vitaliya", "Marina", "Grisha", "Petr"]
@@ -334,7 +366,8 @@ if __name__ == "__main__":
                     get_car.append(i)
 
             if count_cars > random_place:
-                raise ValueError("Count cars more then count place. RUN PGOGRAM AGAIN")
+                raise ValueError("Count cars more then count place."
+                                 " RUN PGOGRAM AGAIN")
             else:
                 garage = Garage(town=random.choice(TOWNS),
                                 places=random_place,
@@ -391,6 +424,7 @@ if __name__ == "__main__":
     # print(f"\nAFTER REMOVE NEW CAR: {garages[0].remove(garages[0].cars[0])}")
     #
     # print(f"\nADD CAR TO FREE GARAGE: {cesars[0].add_car(car1)}")
-    # print(f"\nADD CAR TO SELECTED GARAGE: {cesars[0].add_car(car2, garages[0])}")
+    # print(f"\nADD CAR TO SELECTED GARAGE: "
+    #       f"{cesars[0].add_car(car2, garages[0])}")
 
 print("-----------------------------------")
