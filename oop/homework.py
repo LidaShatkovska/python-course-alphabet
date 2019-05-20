@@ -6,7 +6,6 @@ class Cat:
     Write Class Cat which will receive age from user
     * Add to class average_speed variable which will get it's values
       from private method _set_average_speed()
-
     * Add to class saturation_level variable with value 50
     """
     average_speed = None
@@ -77,7 +76,6 @@ class Cat:
           if it runs more than 200(not including) than _reduce_saturation_level with value 50
 
           return text like this: f"Your cat ran {ran_km} kilometers"
-
         """
         distance = self.average_speed * hours
         print ("Your cat ran {} kilometers".format(distance))
@@ -94,21 +92,17 @@ class Cat:
 
     def get_saturation_level(self):
         """
-        *Implement
-        get_saturation_level and
+        * Implement get_saturation_level and
         return saturation_level
         if saturation_level eq 0 return text like this: "Your cat is died :("
-
-        """
+         """
         if self.saturation_level == 0:
             print ("Your cat is died :(")
         else:
             return self.saturation_level
 
     def get_average_speed(self):
-        """
-        Implement get_average_speed and return average_speed
-        """
+        """*  Implement get_average_speed and return average_speed"""
         return self.average_speed
 
 
@@ -145,10 +139,7 @@ class Cheetah(Cat):
 
 
 class Wall:
-    """
-    * Implement class Wall which receives such parameters: width and height
-
-    """
+    """* Implement class Wall which receives such parameters: width and height"""
 
     def __init__(self, width, height):
         self.width = width
@@ -174,9 +165,7 @@ class Wall:
 
 
 class Roof:
-    """
-        * Implement class Roof which receives such parameters: width, height and roof_type
-    """
+    """ * Implement class Roof which receives such parameters: width, height and roof_type """
 
     def __init__(self, width, height, roof_type):
         self.width = width
@@ -202,9 +191,7 @@ class Roof:
 class Window:
     """
        * Implement class Window which receives such parameters: width and height
-
        * Implement method window_square which return result of simple square formula of rectangle
-
     """
 
     def __init__(self, width, height):
@@ -265,33 +252,8 @@ class House:
     * Add super private variable __windows and its value will be empty list
     * Add super private variable __roof and its value will be None
     * Add super private variable __door and its value will be None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     """
+
     def __init__(self):
         self.__walls = []
         self.__windows = []
@@ -334,7 +296,6 @@ class House:
         else:
             raise ValueError("The house can not have two roofs")
 
-
     def create_window(self, width, height):
         """
             * Implement method create_window which will create new window using class Window and add it to the __windows list
@@ -343,7 +304,6 @@ class House:
         """
         self.check_param(width, height)
         self.__windows.append(Window(width, height))
-
 
     def create_door(self, width, height):
         """
@@ -359,7 +319,6 @@ class House:
             self.__door = Door(width, height)
         else:
             raise ValueError("The house can not have two doors")
-
 
     def get_count_of_walls(self):
         """* Implement method get_count_of_walls that returns count of walls"""
@@ -405,8 +364,8 @@ class House:
              Check if roll_width_m or roll_length_m eq 0 raise ValueError "Sorry length must be not 0"
         """
         self.check_param(roll_width_m, roll_length_m)
-        return sum([num_wallpaper.number_of_rolls_of_wallpaper(roll_width_m, roll_length_m) for num_wallpaper in self.__walls])
-
+        return sum(
+            [num_wallpaper.number_of_rolls_of_wallpaper(roll_width_m, roll_length_m) for num_wallpaper in self.__walls])
 
     def get_room_square(self):
         """ * Implement method get_room_square that returns the square of our room
