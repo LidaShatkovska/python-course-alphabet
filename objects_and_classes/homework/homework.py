@@ -80,7 +80,7 @@ class Car:
         self.producer = producer
         self.mileage = round(mileage, 2)
         self.number = uuid.uuid4()
-        self.car_set = ({'producer': self.producer, 'car_type': self.car_type, \
+        self.car_set = ({'producer': self.producer, 'car_type': self.car_type,
                          'number': str(self.number), 'price': self.price, 'mileage': self.mileage})
 
     def __repr__(self):
@@ -105,7 +105,7 @@ class Car:
 
     @staticmethod
     def to_json(obj):
-        car_data = {"price": obj.price, "car_type": obj.car_type, "number": str(obj.number), \
+        car_data = {"price": obj.price, "car_type": obj.car_type, "number": str(obj.number),
                     "producer": obj.producer, "mileage": obj.mileage}
         return car_data
 
@@ -150,7 +150,7 @@ class Garage:
         self.places = places
         self.garage_cars = garage_cars if garage_cars is not None else []
         self.owner = owner
-        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner, \
+        self.garage_set = ({'town': self.town, 'places': self.places, 'owner': self.owner,
                             'garage_cars': self.garage_cars})
 
     def __repr__(self):
@@ -348,34 +348,34 @@ if __name__ == "__main__":
     cesar = Cesar(name=random.choice(CESAR_NAME), cesar_garages=garages)
     cesars.append(cesar)
 
-    print (f"\n-----CHECK CESAR------")
+    print(f"\n-----CHECK CESAR------")
     for item in cesars:
         print(f"{item}\n")
 
     # -------HW5 CHECK------------
 
-    print (f'\n----JSON------')
+    print(f'\n----JSON------')
     car1.save_json_into_file()
     json_str = car1.save_json_into_str()
     new_car_file = Car.instance_from_json_file()
     print()
     new_car_str = Car.instance_from_json_str(json_str)
 
-    print (f'\n----YAML------')
+    print(f'\n----YAML------')
     garage1 = Garage.instance_from_yaml_file()
     print()
     garage1.save_yaml_into_file()
     yaml_str = garage1.save_yaml_into_str()
     Garage.instance_from_yaml_str(yaml_str)
 
-    print (f"\n-----PICKLE------")
+    print(f"\n-----PICKLE------")
     cesars[0].pickle_to_file()
     new_cesar_file = Cesar.instance_from_pickle_file()
-    print (f"NEW_CESAR_FROM_PICKLE_FILE: {new_cesar_file}\n")
+    print(f"NEW_CESAR_FROM_PICKLE_FILE: {new_cesar_file}\n")
     pickle_str = cesar.pickle_to_str()
 
     new_cesar_str = Cesar.instance_from_pickle_str(pickle_str)
-    print (f"\nNEW_CESAR_FROM_PICKLE_STR {new_cesar_str}\n")
+    print(f"\nNEW_CESAR_FROM_PICKLE_STR {new_cesar_str}\n")
 
     # print (f"THE RICHEST CESAR IS: {(Cesar.compare_cesar(cesars)).name}")
 
@@ -393,4 +393,4 @@ if __name__ == "__main__":
     # print(f"\nADD CAR TO FREE GARAGE: {cesars[0].add_car(car1)}")
     # print(f"\nADD CAR TO SELECTED GARAGE: {cesars[0].add_car(car2, garages[0])}")
 
-print ("-----------------------------------")
+print("-----------------------------------")
