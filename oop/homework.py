@@ -9,12 +9,13 @@ class Cat:
     * Add to class saturation_level variable with value 50
     """
 
-    def __init__(self, age):
+    def __init__(self, age: int):
         self.age = age
         self.saturation_level = 50
         self.average_speed = self._set_average_speed()
 
-    def _check_saturation_level(self, value):
+    @staticmethod
+    def _check_saturation_level(saturation_level: int) -> int:
         """
          * Implement private methods _increase_saturation_level
            and _reduce_saturation_level that will receive value and
@@ -22,21 +23,21 @@ class Cat:
           if saturation_level is less than 0, return 0
           if saturation_level is grosser than 100, return 100
         """
-        if value < 0:
-            self.saturation_level = 0
-        if self.saturation_level > 100:
-            self.saturation_level = 100
-        return self.saturation_level
+        if saturation_level < 0:
+            saturation_level = 0
+        if saturation_level > 100:
+            saturation_level = 100
+        return saturation_level
 
-    def _reduce_saturation_level(self, value):
+    def _reduce_saturation_level(self, value: int) -> int:
         self.saturation_level -= value
         return self._check_saturation_level(self.saturation_level)
 
-    def _increase_saturation_level(self, value):
+    def _increase_saturation_level(self, value: int) -> int:
         self.saturation_level += value
         return self._check_saturation_level(self.saturation_level)
 
-    def eat(self, product):
+    def eat(self, product: str) -> int:
         """
          * Implement method eat which will receive from user product value
           if product eq fodder use _increase_saturation_level with value eq 10
@@ -51,7 +52,7 @@ class Cat:
             self.saturation_level = self._increase_saturation_level(2)
         return self.saturation_level
 
-    def _set_average_speed(self):
+    def _set_average_speed(self) -> int:
         """
         * Implement private method _set_average_speed
           if age less or eq 7 return 12
@@ -66,7 +67,7 @@ class Cat:
             self.average_speed = 6
         return self.average_speed
 
-    def run(self, hours):
+    def run(self, hours: int) -> str:
         """
          * Implement method run it receives hours value
           Calculate run km per hours remember that you have average_speed value
@@ -84,7 +85,6 @@ class Cat:
           return text like this: f"Your cat ran {ran_km} kilometers"
         """
         ran_km = self.average_speed * hours
-        print("Your cat ran {} kilometers".format(ran_km))
         if ran_km <= 25:
             self._reduce_saturation_level(2)
         elif 25 < ran_km <= 50:
@@ -96,18 +96,18 @@ class Cat:
         elif ran_km > 200:
             self._reduce_saturation_level(50)
 
+        return f"Your cat ran {ran_km} kilometers"
+
     def get_saturation_level(self):
         """
         * Implement get_saturation_level and
         return saturation_level
         if saturation_level eq 0 return text like this: "Your cat is died :("
          """
-        if self.saturation_level == 0:
-            return "Your cat is died :("
-        else:
-            return self.saturation_level
+        return "Your cat is died :(" if self.saturation_level == 0 else self.saturation_level
 
-    def get_average_speed(self):
+
+    def get_average_speed(self) -> int:
         """*  Implement get_average_speed and return average_speed"""
         return self.average_speed
 
@@ -117,7 +117,7 @@ class Cheetah(Cat):
     * Inherit from class Cat
     """
 
-    def eat(self, product):
+    def eat(self, product: str) -> int:
         """
         * Redefine method eat from parent class it will receive product value
           if product eq gazelle use _increase_saturation_level
@@ -129,8 +129,9 @@ class Cheetah(Cat):
             self._increase_saturation_level(30)
         if product == 'rabbit':
             self._increase_saturation_level(15)
+        return self.saturation_level
 
-    def _set_average_speed(self):
+    def _set_average_speed(self) -> int:
         """
         * Redefine method _set_average_speed
           if age less or eq 5 return 90
@@ -152,18 +153,18 @@ class Wall:
     width and height
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
 
-    def wall_square(self):
+    def wall_square(self) -> int:
         """
         Implement method wall_square which return result
         of simple square formula of rectangle
         """
         return int(self.width * self.height)
 
-    def number_of_rolls_of_wallpaper(self, roll_width_m, roll_length_m):
+    def number_of_rolls_of_wallpaper(self, roll_width_m: int, roll_length_m: int) -> int:
         """
         * Implement method number_of_rolls_of_wallpaper which receives
         such parameters: roll_width_m, roll_length_m
@@ -178,7 +179,7 @@ class Wall:
           count of lines in roll
         """
 
-        return math.floor(self.width / roll_width_m) / math.floor(roll_length_m / self.height)
+        return (self.width // roll_width_m ) / (roll_length_m // self.height)
 
 
 class Roof:
@@ -187,12 +188,12 @@ class Roof:
     width, height and roof_type
     """
 
-    def __init__(self, width, height, roof_type):
+    def __init__(self, width: int, height: int, roof_type: str):
         self.width = width
         self.height = height
         self.roof_type = roof_type
 
-    def roof_square(self):
+    def roof_square(self) -> int:
         """
         * Implement method roof_square that returns square of the roof
           if roof_type eq "gable" the roof square if simple rectangle
@@ -219,7 +220,7 @@ class Window:
        result of simple square formula of rectangle
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
 
@@ -234,20 +235,20 @@ class Door:
 
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
         self.wood_price = 10
         self.metal_price = 3
 
-    def door_square(self):
+    def door_square(self) -> int:
         """
         * Implement method door_square which return
         result of simple square formula of rectangle
         """
         return self.width * self.height
 
-    def door_price(self, material):
+    def door_price(self, material: str) -> float:
         """
         * Implement m get_roof_squareethod door_price which
         receives material value as a parameter
@@ -263,7 +264,7 @@ class Door:
         else:
             raise ValueError("Sorry we don't have such material")
 
-    def update_wood_price(self, new_price):
+    def update_wood_price(self, new_price: float) -> float:
         """
         Implement method update_wood_price which
         receives new_price value and updates your old price
@@ -271,7 +272,7 @@ class Door:
         self.wood_price = new_price
         return self.wood_price
 
-    def update_metal_price(self, new_price):
+    def update_metal_price(self, new_price: float):
         """
         Implement method update_metal_price which
         receives new_price value and updates your old price
@@ -298,11 +299,11 @@ class House:
         self.__door = None
 
     @staticmethod
-    def check_param(width, height):
+    def check_param(width: int, height: int):
         if width == 0 or height == 0:
             raise ValueError("Value must be not 0")
 
-    def create_wall(self, width, height):
+    def create_wall(self, width: int, height: int) -> Wall:
         """
         * Implement method create_wall which will create new wall
         using class Wall and add it to the __walls list
@@ -318,9 +319,8 @@ class House:
         else:
             self.__walls.append(Wall(width, height))
 
-        pass
 
-    def create_roof(self, width, height, roof_type):
+    def create_roof(self, width: int, height: int, roof_type: str) -> Roof:
         """
         * Implement method create_roof which will create new roof using
         class Roof and assign it to the __roof variable
@@ -336,7 +336,7 @@ class House:
         else:
             raise ValueError("The house can not have two roofs")
 
-    def create_window(self, width, height):
+    def create_window(self, width: int, height: int) -> Window:
         """
             * Implement method create_window which will create new window
             using class Window and add it to the __windows list
@@ -346,7 +346,7 @@ class House:
         self.check_param(width, height)
         self.__windows.append(Window(width, height))
 
-    def create_door(self, width, height):
+    def create_door(self, width: int, height: int) -> Door:
         """
         * Implement method create_door which will create new door using
         class Door and assign it to the __door variable
@@ -362,62 +362,62 @@ class House:
         else:
             raise ValueError("The house can not have two doors")
 
-    def get_count_of_walls(self):
+    def get_count_of_walls(self) -> int:
         """
         * Implement method get_count_of_walls that returns count of walls
         """
         return len(self.__walls)
 
-    def get_count_of_windows(self):
+    def get_count_of_windows(self) -> int:
         """
         * Implement method get_count_of_windows that returns count of windows
         """
         return len(self.__windows)
 
-    def get_door_price(self, material_value):
+    def get_door_price(self, material_value: str) -> float:
         """* Implement method get_door_price that receives material value
         and returns price of the door"""
         return self.__door.door_price(material_value)
 
-    def update_wood_price(self, new_wood_price):
+    def update_wood_price(self, new_wood_price: float):
         """
         * Implement method update_wood_price that receives new_wood_price
         and updates old one
         """
         self.__door.update_wood_price(new_wood_price)
 
-    def update_metal_price(self, new_metal_price):
+    def update_metal_price(self, new_metal_price: float):
         """
         * Implement method update_metal_price that receives new_metal_price
         and updates old one
         """
         self.__door.update_metal_price(new_metal_price)
 
-    def get_roof_square(self):
+    def get_roof_square(self) -> int:
         """* Implement method get_roof_square that returns the roof square"""
         return self.__roof.roof_square()
 
-    def get_walls_square(self):
+    def get_walls_square(self) -> int:
         """
         * Implement method get_walls_square that returns sum of all
         walls square that we have
         """
         return sum([wall.wall_square() for wall in self.__walls])
 
-    def get_windows_square(self):
+    def get_windows_square(self) -> int:
         """
         * Implement method get_windows_square that returns sum of
         all windows square that we have
         """
         return sum([window.window_square() for window in self.__windows])
 
-    def get_door_square(self):
+    def get_door_square(self) -> int:
         """
         * Implement method get_door_square that returns the square of the door
         """
         return self.__door.door_square()
 
-    def get_number_of_rolls_of_wallpapers(self, roll_width_m, roll_length_m):
+    def get_number_of_rolls_of_wallpapers(self, roll_width_m, roll_length_m) -> int:
         """
            * Implement method get_number_of_rolls_of_wallpapers that returns
              sum of the number of rolls of wallpapers needed for all our walls
@@ -429,7 +429,7 @@ class House:
         return sum([num_wallpaper.number_of_rolls_of_wallpaper(roll_width_m, roll_length_m)
                     for num_wallpaper in self.__walls])
 
-    def get_room_square(self):
+    def get_room_square(self) -> int:
         """ * Implement method get_room_square that returns the square of our room
             (from walls_square divide windows and door square)"""
         return self.get_walls_square() - self.get_windows_square() - self.get_door_square()
