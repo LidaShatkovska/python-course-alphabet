@@ -1,6 +1,3 @@
-import math
-
-
 class Cat:
     """
     Write Class Cat which will receive age from user
@@ -106,7 +103,6 @@ class Cat:
          """
         return "Your cat is died :(" if self.saturation_level == 0 else self.saturation_level
 
-
     def get_average_speed(self) -> int:
         """*  Implement get_average_speed and return average_speed"""
         return self.average_speed
@@ -164,7 +160,7 @@ class Wall:
         """
         return int(self.width * self.height)
 
-    def number_of_rolls_of_wallpaper(self, roll_width_m: int, roll_length_m: int) -> int:
+    def number_of_rolls_of_wallpaper(self, roll_width_m: int, roll_length_m: int) -> float:
         """
         * Implement method number_of_rolls_of_wallpaper which receives
         such parameters: roll_width_m, roll_length_m
@@ -179,7 +175,7 @@ class Wall:
           count of lines in roll
         """
 
-        return (self.width // roll_width_m ) / (roll_length_m // self.height)
+        return (self.width // roll_width_m) / (roll_length_m // self.height)
 
 
 class Roof:
@@ -303,7 +299,7 @@ class House:
         if width == 0 or height == 0:
             raise ValueError("Value must be not 0")
 
-    def create_wall(self, width: int, height: int) -> Wall:
+    def create_wall(self, width: int, height: int):
         """
         * Implement method create_wall which will create new wall
         using class Wall and add it to the __walls list
@@ -319,8 +315,7 @@ class House:
         else:
             self.__walls.append(Wall(width, height))
 
-
-    def create_roof(self, width: int, height: int, roof_type: str) -> Roof:
+    def create_roof(self, width: int, height: int, roof_type: str):
         """
         * Implement method create_roof which will create new roof using
         class Roof and assign it to the __roof variable
@@ -336,7 +331,7 @@ class House:
         else:
             raise ValueError("The house can not have two roofs")
 
-    def create_window(self, width: int, height: int) -> Window:
+    def create_window(self, width: int, height: int):
         """
             * Implement method create_window which will create new window
             using class Window and add it to the __windows list
@@ -346,7 +341,7 @@ class House:
         self.check_param(width, height)
         self.__windows.append(Window(width, height))
 
-    def create_door(self, width: int, height: int) -> Door:
+    def create_door(self, width: int, height: int):
         """
         * Implement method create_door which will create new door using
         class Door and assign it to the __door variable
