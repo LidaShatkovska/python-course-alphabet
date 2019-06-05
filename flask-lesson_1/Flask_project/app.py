@@ -36,3 +36,7 @@ def login():
 @app.errorhandler(401)
 def error_401_handler(error):
     return render_template("error_401.html", error=error)
+
+
+if __name__ == 'main':
+    app.run(debug=True)
