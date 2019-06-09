@@ -38,5 +38,5 @@ def error_401_handler(error):
     return render_template("error_401.html", error=error)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.run(debug=True)
