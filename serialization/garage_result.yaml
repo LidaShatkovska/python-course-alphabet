@@ -1,0 +1,14 @@
+town: London
+places: 7
+owner: None
+garage_cars:
+- producer: Chevrolet
+  car_type: Luxury Car
+  number: f83f2249-f0c0-424a-a4bf-51d4acf5fa1a
+  price: 940.51
+  mileage: 81600.26
+- producer: Ford
+  car_type: Truck
+  number: 10ebe2f4-7a3b-431c-af15-434591066dae
+  price: 228.53
+  mileage: 213985.19
